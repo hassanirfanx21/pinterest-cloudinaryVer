@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Posts</title>
+    <link rel="stylesheet" href="/stylesheets/feed.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <header>
+        <div>FEED</div>
+    </header>
+    <main id="main">
+        <!-- The content will be dynamically inserted here -->
+    </main>
+    <script>
+        window.addEventListener("load", function () {
+            var scrollpos = localStorage.getItem('scrollpos');
+            if (scrollpos) window.scrollTo(0, scrollpos);
+        });
+
+        window.addEventListener("beforeunload", function () {
+            localStorage.setItem('scrollpos', window.scrollY);
+        });
+
+        async function fetchUser() {
+            try {
+                const response = await fetch('/api/user');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching user:', error);
+                return null;
+            }
+        }
+
+        async function fetchPosts(user) {
+            try {
+                const response = await fetch('/api/feed');
+                const posts = await response.json();
+                const main = document.querySelector("main");
+
+                let change = true;
+                posts.forEach(post => {
+                    const div = document.createElement("div");
+                    div.className = change ? "box-type-l" : "box-type-s";
+                    change = !change;
+
+                    const img = document.createElement("img");
+                    img.src = `/images/uploads/${post.image}`;
+                    img.loading = "lazy";
+
+                    const like_btn = document.createElement("i");
+                    like_btn.classList.add('fa-solid', 'fa-heart', 'heart');
+
+                    // Set initial color based on whether the user has liked the post
+                    if (post.likes.indexOf(user._id) !== -1) {
+                        like_btn.style.color = "rgba(247, 21, 21, 0.753)";
+                    }
+
+                    // Add click event listener to the like button
+                    like_btn.addEventListener("click", async () => {
+                        try {
+                            const likeResponse = await fetch(`/api/likes/${post._id}`);
+                            //this well ask for get request which will use postid to access its likes array and then add logged in user's id im likes array
+
+                            if (likeResponse.ok) {
+                                // Toggle like button color
+                                if (like_btn.style.color === "rgba(247, 21, 21, 0.753)") {
+                                    like_btn.style.color = ""; // Reset to default (unliked)
+                                } else {
+                                    like_btn.style.color = "rgba(247, 21, 21, 0.753)"; // Set liked color
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error handling like:', error);
+                        }
+                    });
+
+                    div.appendChild(img);
+                    div.appendChild(like_btn);
+                    main.appendChild(div);
+                });
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+            }
+        }
+
+        async function main() {
+            const user = await fetchUser();
+            if (user) {
+                await fetchPosts(user);
+            }
+        }
+
+        main();
+
+
+
+
+    </script>
+</body>
+
+</html>

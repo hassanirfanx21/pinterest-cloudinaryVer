@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Posts</title>
+    <link rel="stylesheet" href="/stylesheets/userPost.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <header>
+        <div>
+            <%= user.fullname %>'s Posts
+        </div>
+    </header>
+    <main id="main">
+        <!-- The content will be dynamically inserted here -->
+    </main>
+    <script>
+        window.addEventListener("load", function () {
+            var scrollpos = localStorage.getItem('scrollpos');
+            if (scrollpos) window.scrollTo(0, scrollpos);
+        });
+
+        window.addEventListener("beforeunload", function () {
+            localStorage.setItem('scrollpos', window.scrollY);
+        });
+
+        // Fetch posts data from the server
+        fetch('/api/userPosts')
+            .then(response => response.json())
+            .then(posts => {
+                const main = document.querySelector("main");
+                let change = true;
+                posts.forEach(post => {
+                    // Create a new div element
+                    const div = document.createElement("div");
+                    div.className = change ? "box-type-l" : "box-type-s";
+                    change = !change;
+
+                    // Create a new img element
+                    const img = document.createElement("img");
+                    img.src = `/images/uploads/${post.image}`;
+
+                    // Create delete button
+                    const del_btn = document.createElement("div");
+                    del_btn.id = "delete";
+                    del_btn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+
+                    // Add event listener to delete button
+                    del_btn.addEventListener("click", async () => {
+                        try {
+                            const response = await fetch(`/deletePost/${post._id}`, { method: 'DELETE' });
+                            if (response.ok) {
+                                div.remove(); // Remove the post from the DOM
+                                console.log("Post deleted successfully");
+                            } else {
+                                console.error("Error deleting the post:", response.statusText);
+                            }
+                        } catch (error) {
+                            console.error('Error deleting the post:', error);
+                        }
+                    });
+
+                    // Append elements to div
+                    div.appendChild(img);
+                    div.appendChild(del_btn);
+
+                    // Append div to main
+                    main.appendChild(div);
+                });
+            })
+            .catch(error => console.error('Error fetching posts:', error));
+    </script>
+</body>
+
+</html>

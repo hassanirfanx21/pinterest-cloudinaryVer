@@ -1,0 +1,101 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: black;
+}
+
+header {
+  border: 3px solid rgba(0, 0, 0, 0.276);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1313138c;
+  border-radius: 47px;
+  width: 80vw;
+  margin: 13px auto;
+}
+
+header div {
+  background-color: rgb(85, 10, 1);
+  width: 235px;
+  height: 38px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin: 10px;
+  border-radius: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+  width: 85vw;
+  border: 3px solid rgba(0, 0, 0, 0.276);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+  margin: 0 auto;
+  grid-auto-rows: 10px; /* Set a small base row height */
+}
+
+.box-type-l,
+.box-type-s {
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+.box-type-l:hover,
+.box-type-s:hover {
+  background-color: rgba(0, 0, 0, 0.6); /* Darker background on hover */
+  transform: scale(107%);
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+.box-type-l:hover img,
+.box-type-s:hover img {
+  opacity: 0.4; /* Darken the image on hover */
+}
+
+.box-type-l {
+  grid-row: span 17; /* Larger boxes span more rows */
+}
+
+.box-type-s {
+  grid-row: span 13; /* Smaller boxes span fewer rows */
+}
+#delete {
+  z-index: 10;
+  position: absolute;
+  bottom: 28px;
+  right: 25px;
+  font-size: 36px;
+  /* color: rgba(255, 255, 255, 0.2); */
+  transition: visibility 0s, color 0.3s ease, transform 0.3s ease-in;
+  color: #b7b0b0f7;
+  visibility: hidden;
+}
+.box-type-l:hover #delete,
+.box-type-s:hover #delete {
+  visibility: visible; /* Visible on hover */
+  cursor: pointer;
+}
+#delete:hover {
+  transform: scale(1.3);
+}
