@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm run build:css && node ./bin/www",
-    "build:css": "npx tailwindcss -i ./public/stylesheets/input.css -o ./public/stylesheets/output.css --watch"
+    "build:css": "npx tailwindcss -i ./public/stylesheets/input.css -o ./public/stylesheets/output.css"
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
