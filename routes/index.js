@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const cloudinary = require("../config/cloudinaryConfig").v2; // Import Cloudinary's v2 API
+const cloudinary = require("../config/cloudinaryConfig"); // Import Cloudinary's v2 API
 const mongoose = require("mongoose");
 const passport = require("passport");
 const userModel = require("./users"); // Updated path
