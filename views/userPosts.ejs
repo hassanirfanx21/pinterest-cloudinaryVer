@@ -44,7 +44,7 @@
 
                     // Create a new img element
                     const img = document.createElement("img");
-                    img.src = `/images/uploads/${post.image}`;
+                    img.src = `https://res.cloudinary.com/dy20mrrq9/image/upload/${post.image_public_id}`; // Cloudinary URL
 
                     // Create delete button
                     const del_btn = document.createElement("div");

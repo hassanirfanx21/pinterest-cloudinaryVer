@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
   dp: [
     {
       type: String,
-      default: "default-profile.png",
+      default: "default-profile_ynrx8i", // Cloudinary public ID
     },
   ],
   posts: [

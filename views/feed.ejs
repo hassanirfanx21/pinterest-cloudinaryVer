@@ -52,8 +52,7 @@
                     change = !change;
 
                     const img = document.createElement("img");
-                    img.src = `/images/uploads/${post.image}`;
-                    img.loading = "lazy";
+                    img.src = `https://res.cloudinary.com/dy20mrrq9/image/upload/${post.image_public_id}`; // Cloudinary URL                    img.loading = "lazy";
 
                     const like_btn = document.createElement("i");
                     like_btn.classList.add('fa-solid', 'fa-heart', 'heart');

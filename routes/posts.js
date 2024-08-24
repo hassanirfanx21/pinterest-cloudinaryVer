@@ -1,30 +1,11 @@
 const mongoose = require("mongoose");
 
-// Define the Post schema
 const postSchema = new mongoose.Schema({
-  postText: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-  likes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
+  postText: String,
+  image: String, // Cloudinary URL
+  image_public_id: String, // Cloudinary public ID
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
-const Post = mongoose.model("Post", postSchema);
-
-module.exports = Post;
+module.exports = mongoose.model("Post", postSchema);

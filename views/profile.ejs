@@ -6,95 +6,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/stylesheets/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
+    <section class="profile-card">
+        <div class="image">
+            <img src="<%= user.dp[0] %>" alt="Profile Picture" />
+            <span><i class="fa-solid fa-pen-to-square" id="pen"></i></span>
+        </div>
+        <!-- this is for DP style="visibility: hidden; -->
+        <form action="/profileDp" method="post" enctype="multipart/form-data">
+            <input type="file" name="profilePic" id="uploadButton" style="display: none;">
+            <button type="submit" style="display: none;" id="submitbtn">dp</button>
+        </form>
+        <!-- this is for post -->
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" id="uploadPost" hidden>
+            <button type="submit" id="submitPost" hidden>upload</button>
+        </form>
+        <button id="up_btn">Upload Post</button>
+        <% if (flash && flash.length>0){ %>
+            <p class="error">
+                <%=flash[0] %>
+            </p>
+        <% } %>
+        <div class="text-data">
+            <h2>
+                <%= user.fullname %>
+            </h2>
+            <h1 class="thin">
+                <b>Email:</b>
+                <%= user.email %>
+            </h1>
+            <!-- <p>YouTuber & Blogger</p> -->
+        </div>
+        <div class="media-icons">
+            <a href="#" style="background-color: #4267b2" ;>
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="#" style="background-color: #e13062" ;>
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+        </div>
+        <div class="buttons">
+            <button> <a href="/userPosts" style="text-decoration: none; color:white">Posts</a> </button>
+            <button><a href="/feed" style="text-decoration: none; color:white">Feed</a></button>
+        </div>
+        <div><%- include('partials/logoutbutton') %></div>
+    </section>
 
-    <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-            integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-            rel="stylesheet">
-    </head>
+    <script>
+        //profile selection
+        const pen = document.querySelector('#pen');
+        const uploadButton = document.getElementById('uploadButton');
+        const submit_btn = document.getElementById('submitbtn');
 
-    <body>
-        <section class="profile-card">
-            <div class="image">
-                <img src="/images/profiles/<%=user.dp[0] %>" alt="user image">
-                <span><i class="fa-solid fa-pen-to-square" id="pen"></i></span>
-            </div>
-            <!-- this is for DP style="visibility: hidden; -->
-            <form action="/profileDp" method="post" enctype="multipart/form-data">
-                <input type="file" name="profilePic" id="uploadButton" style="display: none;">
-                <button type="submit" style="display: none;" id="submitbtn">dp</button>
-            </form>
-            <!-- this is for post -->
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" id="uploadPost" hidden>
-                <button type="submit" id="submitPost" hidden>upload</button>
-            </form>
-            <button id="up_btn">Upload Post</button>
-            <% if (flash && flash.length>0){ %>
-                <p class="error">
-                    <%=flash[0] %>
-                </p>
-                <% }%>
-                    <div class="text-data">
-                        <h2>
-                            <%= user.fullname %>
-                        </h2>
-                        <h1 class="thin">
-                            <b>Email:</b>
-                            <%= user.email %>
-                        </h1>
-                        <!-- <p>YouTuber & Blogger</p> -->
-                    </div>
-                    <div class="media-icons">
-                        <a href="#" style="background-color: #4267b2" ;>
-                            <i class="fa-brands fa-facebook"></i>
-                        </a>
-                        <a href="#" style="background-color: #e13062" ;>
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
-                    </div>
-                    <div class="buttons">
-                        <button> <a href="/userPosts" style="text-decoration: none; color:white">Posts</a> </button>
-                        <button><a href="/feed" style="text-decoration: none; color:white">Feed</a></button>
-                    </div>
-                    <div><%- include('partials/logoutbutton') %></div>
-        </section>
+        pen.addEventListener('click', function () {
+            uploadButton.click();
+        });
 
-        <script>
-            //profile selection
-            const pen = document.querySelector('#pen');
-            const uploadButton = document.getElementById('uploadButton');
-            const submit_btn = document.getElementById('submitbtn');
-
-            pen.addEventListener('click', function () {
-                uploadButton.click();
-            });
-
-            uploadButton.addEventListener('change', function (event) {
-                submit_btn.click();
-            });
-            //upload posts section
-            const uploadPost = document.getElementById('uploadPost');
-            const submitPost = document.getElementById('submitPost');
-            const up_btn = document.getElementById('up_btn');
-            up_btn.addEventListener('click', function () {
-                uploadPost.click();
-            });
-            uploadPost.addEventListener('change', function (event) {
-                submitPost.click();
-            });
-        
-        </script>
-    </body>
-
+        uploadButton.addEventListener('change', function (event) {
+            submit_btn.click();
+        });
+        //upload posts section
+        const uploadPost = document.getElementById('uploadPost');
+        const submitPost = document.getElementById('submitPost');
+        const up_btn = document.getElementById('up_btn');
+        up_btn.addEventListener('click', function () {
+            uploadPost.click();
+        });
+        uploadPost.addEventListener('change', function (event) {
+            submitPost.click();
+        });
+    </script>
 </body>
 
 </html>

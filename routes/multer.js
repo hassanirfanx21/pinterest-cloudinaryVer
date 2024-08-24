@@ -1,30 +1,26 @@
 const multer = require("multer");
-const { v4: uuidv4 } = require("uuid");
-var path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinaryConfig");
 
-// Storage for general uploads
-const storageUploads = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/images/uploads");
-  },
-  filename: function (req, file, cb) {
-    const uniquefileName = uuidv4();
-    cb(null, uniquefileName + path.extname(file.originalname));
+// Configure Cloudinary Storage for profiles and posts
+const profileStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "profiles", // Cloudinary folder for profile images
+    allowedFormats: ["jpg", "jpeg", "png"],
   },
 });
 
-// Storage for profile pictures
-const storageProfile = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/images/profiles");
-  },
-  filename: function (req, file, cb) {
-    const uniquefileName = uuidv4();
-    cb(null, uniquefileName + path.extname(file.originalname));
+const postStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "posts", // Cloudinary folder for post images
+    allowedFormats: ["jpg", "jpeg", "png"],
   },
 });
 
-const uploadUploads = multer({ storage: storageUploads });
-const uploadProfile = multer({ storage: storageProfile });
+// Create Multer upload instances
+const uploadProfile = multer({ storage: profileStorage });
+const uploadPost = multer({ storage: postStorage });
 
-module.exports = { uploadUploads, uploadProfile };
+module.exports = { uploadProfile, uploadPost };
