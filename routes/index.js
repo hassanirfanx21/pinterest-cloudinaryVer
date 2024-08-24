@@ -166,7 +166,10 @@ router.post(
       "https://res.cloudinary.com/dy20mrrq9/image/upload/v1724502194/default-profile_ynrx8i.png"
     ) {
       // Extract public_id from the existing profile picture URL
-      const oldPublicId = user.dp[0].split("/").pop().split(".")[0];
+      const oldPublicId = user.dp[0].split("/")
+        .splice(-2)
+        .join("/")
+        .split(".")[0];
 
       // Delete the old profile picture from Cloudinary
       cloudinary.uploader.destroy(oldPublicId, function (error, result) {
