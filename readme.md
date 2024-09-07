@@ -30,5 +30,6 @@ For image storage, I used Cloudinary. This approach reduces server load by stori
 
 #### Build:
 
-- Build & Run section added to specify how to start the server and build CSS using npm start and npm run build.
-                                                        
+ To start the server and build CSS, use the following commands:
+    - `npm start` (Starts the server and builds CSS)
+    - `npm run build` (Builds CSS)                                                        
